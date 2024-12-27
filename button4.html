@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 Days Challenge</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #000000;
+            color: #f9f9f9;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: #f1c40f; /* Yellow for accent */
+        }
+        p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #f9f9f9;
+        }
+        input, textarea, label {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #f1c40f; /* Yellow border */
+            background-color: #2d3142;
+            color: #f9f9f9;
+            font-size: 16px;
+        }
+        label {
+            font-size: 16px;
+            color: #f1c40f; /* Yellow for label */
+            text-align: left;
+            display: block;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #f9f9f9;
+            background: #e67e22; /* Orange background for buttons */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s, background 0.3s;
+        }
+        button:hover {
+            background: #d35400; /* Darker orange for hover */
+            transform: scale(1.1);
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>30 Days Challenge</h1>
+
+    <div id="challengeSection">
+        <p id="dayInfo">Day 1 of 30</p>
+        <p class="workout" id="workout">Today's Workout: 30 Push-ups, 50 Sit-ups, 50 Squats</p>
+        <label for="verificationInput">Enter the total push-ups, sit-ups, and squats you completed today:</label>
+        <input type="text" id="verificationInput" placeholder="E.g., 30, 50, 50" />
+        <button id="completeButton">Complete Today's Workout</button>
+    </div>
+
+    <div id="completionSection" class="hidden">
+        <p>🎉 Congratulations on completing the 30 Days Challenge! 🎉</p>
+        <p>Would you like to continue with a more intense workout?</p>
+        <button id="continueYes">Yes, I'm Ready!</button>
+        <button id="continueNo">No, I Have Feedback</button>
+    </div>
+
+    <!-- Feedback Section -->
+    <div id="feedbackSection" class="hidden">
+        <h2>Your Feedback:</h2>
+        <p>Please provide your feedback. Make sure to prefix your message with <strong>"Feedback:"</strong> so we know it's a suggestion or comment!</p>
+        <label for="feedbackInput">Your Feedback:</label>
+        <textarea id="feedbackInput" rows="4" placeholder="Write your feedback here..."></textarea>
+        <button id="submitFeedback">Submit Feedback</button>
+    </div>
+
+    <div id="advancedRegistrationSection" class="hidden">
+        <p>Please update your details for the advanced workout:</p>
+
+        <!-- Name Input -->
+        <label for="advancedName">Your Name:</label>
+        <input type="text" id="advancedName" placeholder="Enter your name" required />
+
+        <!-- Free Time Input -->
+        <label for="advancedFreeTime">Your Free Time:</label>
+        <input type="time" id="advancedFreeTime" required />
+
+        <!-- Telegram Username Input -->
+        <label for="advancedTelegram">Your Telegram Username:</label>
+        <input type="text" id="advancedTelegram" placeholder="Enter your Telegram username" required />
+
+        <button id="advancedSubmit">Submit</button>
+    </div>
+
+    <script>
+        let currentDay = parseInt(localStorage.getItem('currentDay')) || 1;
+
+        const dayInfo = document.getElementById('dayInfo');
+        const completeButton = document.getElementById('completeButton');
+        const verificationInput = document.getElementById('verificationInput');
+        const challengeSection = document.getElementById('challengeSection');
+        const completionSection = document.getElementById('completionSection');
+        const advancedRegistrationSection = document.getElementById('advancedRegistrationSection');
+        const feedbackSection = document.getElementById('feedbackSection');
+        const submitFeedback = document.getElementById('submitFeedback');
+
+        // Update Day Info
+        function updateDayInfo() {
+            dayInfo.textContent = `Day ${currentDay} of 30`;
+        }
+
+        // Complete Workout
+        completeButton.addEventListener('click', () => {
+            const inputValues = verificationInput.value.trim();
+            const expectedValues = `30, 50, 50`;
+
+            if (inputValues !== expectedValues) {
+                alert("Please enter the correct workout numbers to proceed.");
+                return;
+            }
+
+            alert(`Great job completing Day ${currentDay}!`);
+            currentDay++;
+            localStorage.setItem('currentDay', currentDay);
+
+            if (currentDay > 30) {
+                challengeSection.classList.add('hidden');
+                completionSection.classList.remove('hidden');
+            } else {
+                updateDayInfo();
+                verificationInput.value = '';
+            }
+        });
+
+        // Continue Advanced Workout
+        document.getElementById('continueYes').addEventListener('click', () => {
+            completionSection.classList.add('hidden');
+            advancedRegistrationSection.classList.remove('hidden');
+        });
+
+        // Show Feedback Form
+        document.getElementById('continueNo').addEventListener('click', () => {
+            completionSection.classList.add('hidden');
+            feedbackSection.classList.remove('hidden');
+        });
+
+        // Submit Feedback and Send to Telegram Bot
+        submitFeedback.addEventListener('click', () => {
+            const feedbackText = document.getElementById('feedbackInput').value.trim();
+
+            if (feedbackText === '') {
+                alert("Please enter your feedback.");
+                return;
+            }
+
+            // Check if feedback starts with "Feedback:"
+            if (!feedbackText.toLowerCase().startsWith("feedback:")) {
+                alert("Please prefix your feedback with 'Feedback:' so we know it's a suggestion or comment.");
+                return;
+            }
+
+            // Send feedback to Telegram bot
+            const token = "7700016134:AAHZLkevAPJnhF2QZWJi2qxzDNPvrHvJiB4";
+            const chatId = "1487817808";
+            const message = encodeURIComponent(feedbackText);
+            const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${message}`;
+
+            fetch(telegramUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        alert("Thank you for your feedback!");
+                    } else {
+                        alert("Error sending feedback. Please try again later.");
+                    }
+                })
+                .catch(error => {
+                    alert("Error sending feedback. Please try again later.");
+                    console.error(error);
+                });
+        });
+
+        // Advanced Registration
+        document.getElementById('advancedSubmit').addEventListener('click', () => {
+            const name = document.getElementById('advancedName').value.trim();
+            const freeTime = document.getElementById('advancedFreeTime').value.trim();
+            const telegram = document.getElementById('advancedTelegram').value.trim();
+
+            if (name && freeTime && telegram) {
+                alert(`Thank you, ${name}! Advanced workout reminders will be sent at ${freeTime}.`);
+                // Implement Telegram Bot reminder logic here.
+            } else {
+                alert("Please fill in all the details.");
+            }
+        });
+
+        // Initialize
+        if (currentDay > 30) {
+            challengeSection.classList.add('hidden');
+            completionSection.classList.remove('hidden');
+        } else {
+            updateDayInfo();
+        }
+    </script>
+</body>
+</html>

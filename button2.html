@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan my workout</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000000; /* Black background */
+            color: #f9f9f9; /* White text */
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 50px;
+            color: #f9a825; /* Yellow text */
+            margin-bottom: 20px;
+        }
+        input, select {
+            padding: 10px;
+            font-size: 18px;
+            margin: 10px;
+            width: 300px;
+            border-radius: 8px;
+            border: 2px solid #f9a825; /* Yellow border */
+            background-color: #333333; /* Dark gray input background */
+            color: #f9f9f9; /* White text */
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #000000; /* Black text */
+            background: #ff5722; /* Orange background */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, background 0.3s;
+            margin: 5px;
+        }
+        button:hover {
+            background: #f9a825; /* Yellow on hover */
+            transform: scale(1.1);
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff5722; /* Orange spinner */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 2s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .success, .error {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+        .success {
+            color: #4caf50;
+        }
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fill in the details below:</h1>
+    <form id="userForm">
+        <input type="text" id="name" placeholder="Name" required><br>
+        <input type="number" id="age" placeholder="Age" required><br>
+        <input type="number" id="weight" placeholder="Weight (kg)" required><br>
+        <select id="bulkCut" required>
+            <option value="">Bulk or Cut?</option>
+            <option value="Bulk">Bulk</option>
+            <option value="Cut">Cut</option>
+        </select><br>
+        <input type="text" id="telegramUsername" placeholder="Telegram Username" required><br>
+        <button type="submit">Submit</button>
+        <button type="button" onclick="clearForm()">Clear Form</button>
+    </form>
+    
+    <div id="loading" class="spinner" style="display: none;"></div>
+    <div id="responseMessage"></div>
+
+    <!-- Back Button to Index -->
+    <button onclick="window.location.href='index.html'">Back to Home</button>
+
+    <script>
+        document.getElementById('userForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Show loading spinner
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('responseMessage').innerHTML = ''; // Clear any previous messages
+            
+            const name = document.getElementById('name').value;
+            const age = document.getElementById('age').value;
+            const weight = document.getElementById('weight').value;
+            const bulkCut = document.getElementById('bulkCut').value;
+            const telegramUsername = document.getElementById('telegramUsername').value;
+
+            // Simple validation check
+            if (!name || !age || !weight || !bulkCut || !telegramUsername) {
+                showError('Please fill in all fields.');
+                return;
+            }
+
+            const message = `New User Details:\nName: ${name}\nAge: ${age}\nWeight: ${weight}kg\nGoal: ${bulkCut}\nTelegram Username: ${telegramUsername}`;
+
+            sendToTelegram(message);
+        });
+
+        function sendToTelegram(message) {
+            const botToken = '7700016134:AAHZLkevAPJnhF2QZWJi2qxzDNPvrHvJiB4';  // Your bot token
+            const chatId = '1487817808';  // Your chat ID
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        showSuccess('Message sent successfully!');
+                    } else {
+                        showError('Error sending message.');
+                    }
+                })
+                .catch(error => {
+                    showError('Error: ' + error);
+                })
+                .finally(() => {
+                    document.getElementById('loading').style.display = 'none';  // Hide the spinner
+                });
+        }
+
+        function showSuccess(message) {
+            document.getElementById('responseMessage').innerHTML = `<div class="success">${message}</div>`;
+        }
+
+        function showError(message) {
+            document.getElementById('responseMessage').innerHTML = `<div class="error">${message}</div>`;
+        }
+
+        function clearForm() {
+            document.getElementById('userForm').reset();
+            document.getElementById('responseMessage').innerHTML = ''; // Clear any previous messages
+        }
+    </script>
+</body>
+</html>

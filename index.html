@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motivational Hub</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000000; /* Black background */
+            color: #f9f9f9;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 60px;
+            margin-bottom: 20px;
+            color: #ffcc00; /* Yellow for the main heading */
+            text-shadow: 4px 4px 10px rgba(255, 204, 0, 0.5);
+        }
+        p {
+            font-size: 22px;
+            max-width: 800px; /* Limit the width for better text presentation */
+            line-height: 1.5;
+            margin: 0 auto 40px auto; /* Center the text and add bottom margin */
+            color: #a8dadc;
+            padding: 0 20px; /* Add some padding for text spacing */
+        }
+        #quote {
+            font-style: italic;
+            margin-bottom: 20px;
+            color: #f1faee;
+        }
+        .date-time {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #a8dadc;
+        }
+        .progress-bar-container {
+            width: 80%;
+            background: #a8dadc;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        .progress-bar {
+            height: 20px;
+            width: 50%; /* Example progress; adjust dynamically if needed */
+            background: #ffcc00; /* Yellow progress bar */
+            transition: width 0.3s;
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #f9f9f9;
+            background: #ff6600; /* Orange for buttons */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s, background 0.3s;
+        }
+        button:hover {
+            background: #ff4500; /* Darker orange on hover */
+            transform: scale(1.1);
+        }
+        footer {
+            position: absolute;
+            bottom: 10px;
+            font-size: 16px;
+            color: #6c757d;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 40px;
+            }
+            button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Wanna get fit?</h1>
+    <p>Getting fit improves physical health, boosts energy, enhances mental clarity, reduces stress, and increases confidence, leading to a better overall quality of life.</p>
+    <div class="date-time" id="dateTime"></div>
+    <p id="quote"></p>
+    <div class="progress-bar-container">
+        <div class="progress-bar"></div>
+    </div>
+    <div class="buttons">
+        <button onclick="window.location.href='button1.html'">Let’s Crush It</button>
+        <button onclick="window.location.href='button2.html'">Plan My Workout</button>
+        <button onclick="window.location.href='button3.html'">I’ll Start Tomorrow</button>
+        <button onclick="window.location.href='button4.html'">30-Day Challenge</button>
+    </div>
+    <footer>
+        Designed to remind you that greatness starts with action. 🚀
+    </footer>
+    <script>
+        // Display current date and time
+        const dateTimeElement = document.getElementById('dateTime');
+        const now = new Date();
+        dateTimeElement.textContent = now.toLocaleString();
+
+        // Rotate motivational quotes
+        const quotes = [
+            "Success is the sum of small efforts, repeated day in and day out.",
+            "The future depends on what you do today.",
+            "Don’t wait for opportunity. Create it.",
+            "Believe in yourself and all that you are.",
+        ];
+        const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById('quote').textContent = randomQuote;
+    </script>
+</body>
+</html>

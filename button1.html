@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Push-Up Challenge</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000000; /* Black background */
+            color: #f9f9f9;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 50px;
+            color: #ffcc00; /* Yellow for the main heading */
+            text-shadow: 4px 4px 10px rgba(255, 204, 0, 0.5);
+        }
+        p {
+            font-size: 20px;
+            margin-top: 10px;
+            color: #a8dadc;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff6600; /* Orange for buttons */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #ff4500; /* Darker orange on hover */
+            transform: scale(1.1);
+        }
+        #leaderboard {
+            margin-top: 30px;
+            background-color: #2d3142;
+            padding: 15px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+        }
+        #leaderboard h2 {
+            color: #ffcc00; /* Yellow for leaderboard heading */
+        }
+        #leaderboard ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #leaderboard li {
+            background-color: #000000;
+            margin: 5px;
+            padding: 10px;
+            color: white;
+            border-radius: 4px;
+        }
+        .back-btn {
+            margin-top: 20px;
+            background-color: #000000;
+            color: white;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 18px;
+            margin-top: 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            width: 200px;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #ff6600; /* Orange for focus */
+        }
+        footer {
+            font-size: 16px;
+            color: #6c757d;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Push-Up Challenge</h1>
+
+    <!-- Audio element to play music -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <button onclick="document.getElementById('backgroundMusic').play()">Play Music</button>
+    <button onclick="document.getElementById('backgroundMusic').pause()">Stop Music</button>
+
+    <p>Start the challenge by doing 30 push-ups!</p>
+
+    <!-- Start Stopwatch Button -->
+    <button onclick="startStopwatch()">Start Stopwatch</button>
+
+    <!-- Stopwatch display -->
+    <div id="stopwatch" style="margin-top: 20px; font-size: 25px;"></div>
+
+    <!-- Input for User Name -->
+    <div id="nameInput" style="margin-top: 20px; display: none;">
+        <input type="text" id="userName" placeholder="Enter your name" />
+        <button onclick="submitName()">Submit Name</button>
+    </div>
+
+    <!-- Leaderboard Display -->
+    <div id="leaderboard">
+        <h2>Leaderboard</h2>
+        <ul id="leaderboardList"></ul>
+    </div>
+
+    <!-- Back Button -->
+    <button class="back-btn" onclick="window.location.href='index.html'">Back</button>
+
+    <footer>Push yourself. No one else is going to do it for you. 💪</footer>
+
+    <script>
+        let timer;
+        let seconds = 0;
+        let isRunning = false;
+        let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+
+        // Update Leaderboard
+        function updateLeaderboard() {
+            const leaderboardList = document.getElementById('leaderboardList');
+            leaderboardList.innerHTML = '';
+            leaderboard.forEach(entry => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${entry.name}: ${entry.time} seconds`;
+                leaderboardList.appendChild(listItem);
+            });
+        }
+
+        // Start the stopwatch
+        function startStopwatch() {
+            if (!isRunning) {
+                isRunning = true;
+                timer = setInterval(function () {
+                    seconds++;
+                    document.getElementById('stopwatch').textContent = `Time: ${seconds} seconds`;
+
+                    if (seconds >= 30) {
+                        // Stop if push-ups are done
+                        clearInterval(timer);
+                        alert('Great job! Please stop the stopwatch and enter your name.');
+                        document.getElementById('nameInput').style.display = 'block';
+                    }
+
+                    if (seconds < 20) {
+                        alert("Cheating detected! Time must be more than 20 seconds.");
+                        clearInterval(timer);
+                        document.getElementById('stopwatch').textContent = `Time: ${seconds} seconds`;
+                    }
+                }, 1000);
+            }
+        }
+
+        // Submit the name and save to leaderboard
+        function submitName() {
+            const name = document.getElementById('userName').value;
+            if (name.trim() === '') {
+                alert("Please enter a valid name.");
+                return;
+            }
+
+            // Save the score to leaderboard
+            leaderboard.push({
+                name: name,
+                time: seconds
+            });
+
+            // Save leaderboard to local storage
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+
+            // Clear input and stop the stopwatch
+            document.getElementById('nameInput').style.display = 'none';
+            seconds = 0;
+            document.getElementById('stopwatch').textContent = '';
+            updateLeaderboard();
+        }
+
+        // Initialize leaderboard
+        updateLeaderboard();
+    </script>
+</body>
+</html>
