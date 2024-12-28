@@ -18,18 +18,17 @@
             text-align: center;
         }
         h1 {
-            font-size: 60px;
-            margin-bottom: 20px;
+            font-size: 50px;
+            margin: 20px 10px;
             color: #ffcc00; /* Yellow for the main heading */
             text-shadow: 4px 4px 10px rgba(255, 204, 0, 0.5);
         }
         p {
-            font-size: 22px;
-            max-width: 800px; /* Limit the width for better text presentation */
-            line-height: 1.5;
-            margin: 0 auto 40px auto; /* Center the text and add bottom margin */
+            font-size: 20px;
+            max-width: 90%; /* Adjusted width for mobile screens */
+            line-height: 1.6;
+            margin: 0 auto 20px auto; /* Center the text with spacing */
             color: #a8dadc;
-            padding: 0 20px; /* Add some padding for text spacing */
         }
         #quote {
             font-style: italic;
@@ -42,11 +41,11 @@
             color: #a8dadc;
         }
         .progress-bar-container {
-            width: 80%;
+            width: 90%; /* Adjusted for mobile */
             background: #a8dadc;
             border-radius: 20px;
             overflow: hidden;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
         }
         .progress-bar {
             height: 20px;
@@ -55,14 +54,15 @@
             transition: width 0.3s;
         }
         .buttons {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-bottom: 60px; /* Added spacing to prevent clashes with the footer */
+            display: grid; /* Grid layout for better button alignment */
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            width: 90%; /* Adjusted width */
+            margin-bottom: 40px;
         }
         button {
-            padding: 15px 25px;
-            font-size: 18px;
+            padding: 12px 20px;
+            font-size: 16px;
             font-weight: bold;
             color: #f9f9f9;
             background: #ff6600; /* Orange for buttons */
@@ -74,27 +74,30 @@
         }
         button:hover {
             background: #ff4500; /* Darker orange on hover */
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
         footer {
-            position: relative; /* Changed from absolute to relative */
-            padding-top: 20px; /* Added padding for spacing */
+            position: relative; /* Ensure footer is positioned well */
+            padding-top: 20px;
             font-size: 16px;
             color: #6c757d;
         }
         @media (max-width: 600px) {
             h1 {
-                font-size: 40px;
+                font-size: 35px;
+            }
+            p {
+                font-size: 18px;
             }
             button {
-                font-size: 16px;
-                padding: 10px 20px;
+                font-size: 14px;
+                padding: 10px 15px;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Wanna get fit?</h1>
+    <h1>Wanna Get Fit?</h1>
     <p>Getting fit improves physical health, boosts energy, enhances mental clarity, reduces stress, and increases confidence, leading to a better overall quality of life.</p>
     <div class="date-time" id="dateTime"></div>
     <p id="quote"></p>
