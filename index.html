@@ -58,6 +58,7 @@
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
+            margin-bottom: 60px; /* Added spacing to prevent clashes with the footer */
         }
         button {
             padding: 15px 25px;
@@ -76,8 +77,8 @@
             transform: scale(1.1);
         }
         footer {
-            position: absolute;
-            bottom: 10px;
+            position: relative; /* Changed from absolute to relative */
+            padding-top: 20px; /* Added padding for spacing */
             font-size: 16px;
             color: #6c757d;
         }
@@ -106,7 +107,9 @@
         <button onclick="window.location.href='button3.html'">I’ll Start Tomorrow</button>
         <button onclick="window.location.href='button4.html'">30-Day Challenge</button>
     </div>
-   
+    <footer>
+        Designed to remind you that greatness starts with action. 🚀
+    </footer>
     <script>
         // Display current date and time
         const dateTimeElement = document.getElementById('dateTime');
